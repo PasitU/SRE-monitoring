@@ -15,7 +15,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./backend/DB-Script.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./SRE-Backend-DB/DB-Script.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
     networks:
       - app-network
     healthcheck:
@@ -27,7 +27,7 @@ services:
   # Java Backend Application
   backend:
     build:
-      context: ./backend
+      context: ./SRE-Backend-DB
       dockerfile: Dockerfile
     container_name: java-backend
     restart: unless-stopped
@@ -54,7 +54,7 @@ services:
   # Nginx Frontend
   nginx:
     build:
-      context: ./frontend
+      context: ./SRE-Frontend
       dockerfile: Dockerfile
     container_name: nginx-frontend
     restart: unless-stopped
@@ -75,7 +75,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./SRE-monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus-data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -107,7 +107,7 @@ services:
       - GF_SERVER_ROOT_URL=http://10.13.104.60:3000
     volumes:
       - grafana-data:/var/lib/grafana
-      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./SRE-monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
     depends_on:
       - prometheus
       - loki
@@ -129,7 +129,7 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./monitoring/loki-config.yml:/etc/loki/local-config.yaml:ro
+      - ./SRE-monitoring/loki-config.yml:/etc/loki/local-config.yaml:ro
       - loki-data:/loki
     command: -config.file=/etc/loki/local-config.yaml
     networks:
@@ -147,7 +147,7 @@ services:
     restart: unless-stopped
     user: root
     volumes:
-      - ./monitoring/promtail-config.yml:/etc/promtail/config.yml:ro
+      - ./SRE-monitoring/promtail-config.yml:/etc/promtail/config.yml:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     command: -config.file=/etc/promtail/config.yml
