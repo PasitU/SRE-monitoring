@@ -180,7 +180,7 @@ services:
     image: prom/mysqld-exporter:latest
     container_name: mysql-exporter
     environment:
-      DATA_SOURCE_NAME: "root:mysql@(mysql:3306)/"
+      DATA_SOURCE_NAME: "root:mysql@tcp(mysql:3306)/"
     depends_on:
       - mysql
     ports:
