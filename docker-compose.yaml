@@ -177,10 +177,14 @@ services:
         max-file: "3"
 
   mysql-exporter:
-    image: prom/mysqld-exporter:latest
+    image: quay.io/prometheus/mysqld-exporter
+    restart: unless-stopped
     container_name: mysql-exporter
     environment:
       DATA_SOURCE_NAME: "root:mysql@tcp(mysql:3306)/"
+    command:
+      - "--mysqld.username=user:password"
+      - "--mysqld.address=host:port"
     depends_on:
       - mysql
     ports:
