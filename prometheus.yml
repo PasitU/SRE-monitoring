@@ -34,14 +34,19 @@ scrape_configs:
           service: 'api'
           environment: 'production'
 
-  # MySQL Database (requires mysqld_exporter)
-  # Uncomment if you add mysql-exporter service
-  # - job_name: 'mysql'
-  #   static_configs:
-  #     - targets: ['mysql-exporter:9104']
-  #       labels:
-  #         application: 'mysql'
-  #         environment: 'production'
+  - job_name: 'mysql'
+    static_configs:
+      - targets: ['mysql-exporter:9104']
+        labels:
+          application: 'mysql'
+          environment: 'production'
+          
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx-exporter:9113']
+        labels:
+          application: 'nginx'
+          environment: 'production'
 
   # Node Exporter (System metrics)
   - job_name: 'node-exporter'
