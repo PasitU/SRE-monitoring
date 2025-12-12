@@ -176,6 +176,29 @@ services:
         max-size: "10m"
         max-file: "3"
 
+  mysql-exporter:
+    image: prom/mysqld-exporter:latest
+    container_name: mysql-exporter
+    environment:
+      DATA_SOURCE_NAME: "root:mysql@(mysql:3306)/"
+    depends_on:
+      - mysql
+    ports:
+      - "9104:9104"
+    networks:
+      - app-network
+
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    container_name: nginx-exporter
+    command:
+      - "-nginx.scrape-uri=http://nginx/nginx_status"
+    depends_on:
+      - nginx
+    ports:
+      - "9113:9113"
+    networks:
+      - app-network
 
 networks:
   app-network:
