@@ -161,21 +161,6 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  node-exporter:
-    image: prom/node-exporter:latest
-    container_name: node-exporter
-    restart: unless-stopped
-    ports:
-      - "9100:9100"
-    networks:
-      - app-network
-    pid: host
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-
   mysql-exporter:
     image: quay.io/prometheus/mysqld-exporter
     restart: unless-stopped
@@ -183,8 +168,8 @@ services:
     environment:
       DATA_SOURCE_NAME: "root:mysql@tcp(mysql:3306)/"
     command:
-      - "--mysqld.username=user:password"
-      - "--mysqld.address=host:port"
+      - "--mysqld.username=root:mysql"
+      - "--mysqld.address=10.13.104.60:3306"
     depends_on:
       - mysql
     ports:
