@@ -196,7 +196,7 @@ services:
     image: nginx/nginx-prometheus-exporter:latest
     container_name: nginx-exporter
     command:
-      - "-nginx.scrape-uri=http://nginx/nginx_status"
+      - "-nginx.scrape-uri=http://10.13.104.60/stub_status"
     depends_on:
       - nginx
     ports:
